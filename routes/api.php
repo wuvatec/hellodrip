@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\v1\AuthenticationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,12 @@ Route::domain(config('app.api.subdomain'))->group(function () {
         Route::get('status', function () {
             return response('Ok!', 200);
         })->name('status');
+
+        // Laravel sanctum api authentication
+        Route::post('register', [AuthenticationController::class, 'register'])->name('register');
+        Route::post('login', [AuthenticationController::class, 'login'])->name('login');
+        Route::post('user', [AuthenticationController::class, 'user'])->name('user');
+        Route::post('logout', [AuthenticationController::class, 'logout'])->name('logout');
     });
 
 });
