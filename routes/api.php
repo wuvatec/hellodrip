@@ -28,5 +28,5 @@ Route::domain(config('app.api.subdomain'))->group(function () {
             return response('Ok!', 200);
         })->name('status');
     });
-    
+
 });
