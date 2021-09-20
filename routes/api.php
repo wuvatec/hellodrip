@@ -17,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::domain(config('app.api.subdomain'))->group(function () {
+
+    // Version v1
+    Route::prefix('v1')->group(function () {
+
+        // Check API status
+        Route::get('status', function () {
+            return response('Ok!', 200);
+        })->name('status');
+    });
+    
+});
