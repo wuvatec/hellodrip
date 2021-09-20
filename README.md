@@ -47,7 +47,7 @@ If you are using a Mac with MAMP PRO for mysql server, you are more likely to ru
 
 **[Version 0.7.0]() (20 Sep 2021)**
 
-- Authentication API implemented
+- Authentication API implemented with Laravel Sanctum
 
 
 **[Version 0.0.0]() (20 Sep 2021)**
