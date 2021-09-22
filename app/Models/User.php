@@ -49,4 +49,14 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = Hash::make($value);
     }
+
+    /**
+     * Set administrator
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return in_array($this->email, [config('admin.email')]);
+    }
 }
