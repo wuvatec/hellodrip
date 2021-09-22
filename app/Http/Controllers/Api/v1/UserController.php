@@ -43,12 +43,23 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param User $user
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(Request $request, User $user): JsonResponse
     {
-        //
+        if (!$request->user()->isAdmin()  && $request->user()->id !== $user->id)  {
+            return \response()->json([
+                'success'  => false,
+                'message'  => 'Unauthorized access',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return \response()->json([
+            'success' => true,
+            'data' => $user,
+        ], Response::HTTP_OK);
     }
 
     /**
