@@ -11,11 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return User[]|Collection|JsonResponse
-     */
     public function index(Request $request)
     {
         if (!$request->user()->isAdmin()){
@@ -28,15 +23,21 @@ class UserController extends Controller
         return User::paginate(15);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => 'bail|required|email|unique:users',
+            'password' => 'required'
+        ]);
+
+        $user = User::create($data);
+
+        return  response()->json([
+            'success' => true,
+            'message' => "User successfully created",
+            'data' => $user,
+        ], Response::HTTP_CREATED);
     }
 
     /**
