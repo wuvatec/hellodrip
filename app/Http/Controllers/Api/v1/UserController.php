@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -66,21 +67,42 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user): JsonResponse
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            // 'email' => 'bail|required|email|unique:users',
+            'email' =>  ['bail', 'required', 'email', Rule::unique('users')->ignore($user->id,  'id')],
+        ]);
+
+        if ($request->user()->id !== $user->id) {
+
+            return \response()->json([
+                'success'  => false,
+                'message'  => 'Unauthorized access',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $user->update($data);
+
+        return \response()->json([
+            'success' => true,
+            'message' => 'User successfully updated',
+            'data' => $user,
+        ], Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param User $user
+     * @return void
      */
-    public function destroy($id)
+    public function destroy(Request $request, User $user)
     {
         //
     }
