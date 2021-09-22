@@ -100,10 +100,29 @@ class UserController extends Controller
      *
      * @param Request $request
      * @param User $user
-     * @return void
+     * @return JsonResponse
      */
     public function destroy(Request $request, User $user)
     {
-        //
+        if (!$request->user()->isAdmin()) {
+            return \response()->json([
+                'success'  => false,
+                'message'  => 'Unauthorized!',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($user->isAdmin()) {
+            return \response()->json([
+                'success'  => false,
+                'message'  => 'You are not authorized to delete this user!',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $user->delete();
+
+        return \response()->json([
+            'success' => true,
+            'message'  => 'User successfully deleted!'
+        ], Response::HTTP_NO_CONTENT);
     }
 }
