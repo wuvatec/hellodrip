@@ -14,6 +14,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+        // Only administrator can access all users
         if (!$request->user()->isAdmin()){
             return response()->json([
                 'success' => 'error',
@@ -41,13 +42,6 @@ class UserController extends Controller
         ], Response::HTTP_CREATED);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Request $request
-     * @param User $user
-     * @return JsonResponse
-     */
     public function show(Request $request, User $user): JsonResponse
     {
         if (!$request->user()->isAdmin()  && $request->user()->id !== $user->id)  {
@@ -63,13 +57,6 @@ class UserController extends Controller
         ], Response::HTTP_OK);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param User $user
-     * @return JsonResponse
-     */
     public function update(Request $request, User $user): JsonResponse
     {
         $data = $request->validate([
@@ -95,15 +82,9 @@ class UserController extends Controller
         ], Response::HTTP_OK);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Request $request
-     * @param User $user
-     * @return JsonResponse
-     */
-    public function destroy(Request $request, User $user)
+    public function destroy(Request $request, User $user): JsonResponse
     {
+        // Administrator can only delete other usersss
         if (!$request->user()->isAdmin()) {
             return \response()->json([
                 'success'  => false,
@@ -111,6 +92,7 @@ class UserController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
+        // Administrator can not be deleted
         if ($user->isAdmin()) {
             return \response()->json([
                 'success'  => false,
@@ -118,11 +100,11 @@ class UserController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
+        // Delete a user that is not an admin
         $user->delete();
 
         return \response()->json([
             'success' => true,
-            'message'  => 'User successfully deleted!'
         ], Response::HTTP_NO_CONTENT);
     }
 }
