@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\AuthenticationController;
+use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,12 @@ Route::domain(config('app.api.subdomain'))->group(function () {
         Route::post('login', [AuthenticationController::class, 'login'])->name('login');
         Route::post('user', [AuthenticationController::class, 'user'])->name('user');
         Route::post('logout', [AuthenticationController::class, 'logout'])->name('logout');
+
+        // Protected api routes
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::apiResource('users', UserController::class);
+        });
+
     });
 
 });
