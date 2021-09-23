@@ -1,6 +1,6 @@
 ## About Hello Drip
 
-<p>Message automation application</p>
+<p>Message automation application - Send scheduled messages to  a group of users via different messaging platforms.</p>
 
 - [Laravel](https://laravel.com/docs) and [Vue JS](https://v3.vuejs.org/)
 - [Laravel sanctum token authorization](ps://laravel.com/docs/8.x/sanctum)
@@ -36,7 +36,7 @@ php artisan serve
 **Note**
 If you are using a Mac with MAMP PRO for mysql server, you are more likely to run into a **connection refused** error. to fix this error:
 - Add `DB_SOCKET=/Applications/MAMP/tmp/mysql/mysql.sock` to your `.env` file.
-- Open `leaseboard_pro/config/database.php` and add `'unix_socket' => env('DB_SOCKET', '')` to the mysql connections array options
+- Open `hellodrip/config/database.php` and add `'unix_socket' => env('DB_SOCKET', '')` to the mysql connections array options
 - restart laravel server
 
 
@@ -44,8 +44,8 @@ If you are using a Mac with MAMP PRO for mysql server, you are more likely to ru
 
 **[Version 0.7.0]() (20 Sep 2021)**
 
-- Authentication API implemented with Laravel Sanctum
-- Implement  user management
+- API authorization implemented with Laravel Sanctum
+- Implement user management
 
 
 **[Version 0.0.0]() (20 Sep 2021)**
